@@ -17,6 +17,9 @@ const Products = ({ data: { allContentfulProduct } }) => {
 
   useEffect(() => {
     setProducts(getProducts());
+
+    netlifyIdentity.on('login', () => getProducts());
+    netlifyIdentity.on('logout', () => getProducts());
   }, []);
 
   return (
