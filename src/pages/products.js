@@ -8,15 +8,18 @@ import Layout from '../components/layout';
 const Products = ({ data: { allContentfulProduct } }) => {
   const [products, setProducts] = useState([]);
 
-  const getProducts = () =>
-    netlifyIdentity.currentUser() !== null
-      ? allContentfulProduct.edges
-      : allContentfulProduct.edges.filter(
-          ({ node: product }) => !product.private
-        );
+  const getProducts = () => {
+    setProducts(
+      netlifyIdentity.currentUser() !== null
+        ? allContentfulProduct.edges
+        : allContentfulProduct.edges.filter(
+            ({ node: product }) => !product.private
+          )
+    );
+  };
 
   useEffect(() => {
-    setProducts(getProducts());
+    getProducts();
 
     netlifyIdentity.on('login', () => getProducts());
     netlifyIdentity.on('logout', () => getProducts());
